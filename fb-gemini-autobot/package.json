@@ -1,0 +1,9 @@
+{
+  "name": "fb-gemini-autobot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ระบบตอบแชทลูกค้า Facebook Page อัตโนมัติ ด้วย Gemini API (ฟรี) + Google Sheet เป็นฐานข้อมูลคำตอบ",
+  "engines": {
+    "node": ">=18"
+  }
+}
