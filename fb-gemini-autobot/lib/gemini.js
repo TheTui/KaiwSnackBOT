@@ -3,7 +3,7 @@
 // หมายเหตุเรื่องชื่อโมเดล: Google เปลี่ยนรุ่นโมเดลบ่อย (ปิดรุ่นเก่า/ออกรุ่นใหม่เรื่อย ๆ)
 // ให้เช็กชื่อโมเดลฟรีล่าสุดที่ https://ai.google.dev/gemini-api/docs/pricing ก่อนใช้งานจริง
 // ณ กลางปี 2026 รุ่นที่ยังฟรีอยู่คือตระกูล Flash / Flash-Lite (ไม่ใช่ Pro)
-const MODEL = process.env.GEMINI_MODEL || 'gemini-3-flash';
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.6-flash';
 
 async function askGemini(question, sheetContext) {
   const apiKey = process.env.GEMINI_API_KEY;
