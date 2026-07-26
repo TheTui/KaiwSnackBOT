@@ -25,9 +25,9 @@ module.exports = async (req, res) => {
         return res.status(404).send('Not Found');
       }
 
-      // ตอบ 200 กลับให้ Facebook ทันที ไม่ต้องรอ Gemini (ป้องกัน timeout/ส่งซ้ำ)
-      res.status(200).send('EVENT_RECEIVED');
-
+      // สำคัญ: ต้องทำงานให้เสร็จ (เรียก Gemini + ส่งข้อความกลับ) ก่อน แล้วค่อยตอบ 200
+      // เพราะ Vercel มักจะหยุดการทำงานของ function ทันทีที่ตอบ response กลับไปแล้ว
+      // ถ้าตอบ 200 ก่อนแล้วค่อยทำงานต่อ งานส่วนที่เหลือ (ตอบลูกค้า) อาจไม่ทันเสร็จ
       for (const entry of body.entry || []) {
         const event = entry.messaging && entry.messaging[0];
         if (!event) continue;
@@ -50,10 +50,12 @@ module.exports = async (req, res) => {
           ).catch(() => {});
         }
       }
+
+      // ตอบ 200 หลังจากทำงานทั้งหมดเสร็จแล้วเท่านั้น
+      return res.status(200).send('EVENT_RECEIVED');
     } catch (err) {
       console.error('Webhook error:', err);
-      // เผื่อ error เกิดก่อนที่จะ res.status(200) ไปแล้ว
-      if (!res.headersSent) res.status(500).send('Error');
+      if (!res.headersSent) return res.status(500).send('Error');
     }
     return;
   }
